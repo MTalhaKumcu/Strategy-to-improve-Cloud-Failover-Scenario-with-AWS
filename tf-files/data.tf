@@ -5,7 +5,9 @@ data "template_file" "s3_policy" {
   }
 }
 
-data "aws_caller_identity" "current" {}
+data "aws_caller_identity" "current" {
+
+}
 
 data "archive_file" "lambdazip" {
   type        = "zip"
@@ -31,10 +33,10 @@ data "aws_ami" "nat_instance_ami" {
     values = ["x86_64"]
   }
 
-  filter {
+  /*filter {
     name   = "name"
     values = ["amzn-ami-vpc-nat-*"]
-  }
+  }*/
 }
 
 data "aws_ami" "al2023" {

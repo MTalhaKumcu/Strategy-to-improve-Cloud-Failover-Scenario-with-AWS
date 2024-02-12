@@ -7,7 +7,7 @@ variable "tag_owner" {
 }
 
 variable "tag_name" {
-  default = "ThesisProject"
+  default = "thesisproject"
 }
 
 variable "key_name" {
