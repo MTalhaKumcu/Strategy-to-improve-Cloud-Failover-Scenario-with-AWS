@@ -11,7 +11,7 @@ variable "tag_name" {
 }
 
 variable "key_name" {
-  default = "first-key-pair"
+  default = "project"
 }
 
 #vpc-subnet
@@ -35,11 +35,11 @@ variable "availability_zones" {
 }
 
 variable "s3_bucket_content" {
-  default = "ThesisProject-s3-bucket-content"
+  default = "thesisproject-s3-bucket-content"
 }
 
 variable "s3_bucket_failover" {
-  default = "ThesisProject-s3-bucket-failover"
+  default = "thesisproject-s3-bucket-failover"
 }
 
 variable "rds_db_name" {
