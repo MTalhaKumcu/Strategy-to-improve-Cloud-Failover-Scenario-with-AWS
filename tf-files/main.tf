@@ -1,3 +1,4 @@
+#Provider
 terraform {
   required_providers {
     aws = {
@@ -14,7 +15,7 @@ provider "aws" {
   secret_key = "k2Jp1hWyhKn7Bs6gQbpAnLUMK86FYCl1v/Qjcwwk"
   # region = var.provider_region
 }
-
+#Vpc-subnet-group
 resource "aws_db_subnet_group" "db_subnet_group" {
   name        = "${var.tag_name}_db_subnet_group"
   description = "Subnets available for the RDS DB Instance"
@@ -26,7 +27,7 @@ resource "aws_db_subnet_group" "db_subnet_group" {
     Name = "${var.tag_name}_db_subnet_group"
   }
 }
-
+#Mysql DB
 resource "aws_db_instance" "db_instance" {
   allocated_storage           = 20
   allow_major_version_upgrade = false
@@ -53,7 +54,7 @@ resource "aws_db_instance" "db_instance" {
     Owner = "${var.tag_owner}"
   }
 }
-
+#s3 bucket 
 resource "aws_s3_bucket" "s3_bucket_content" {
   bucket        = var.s3_bucket_content
   force_destroy = true
@@ -158,6 +159,7 @@ resource "aws_s3_bucket_website_configuration" "bucket_website_config" {
   }
 }
 
+#lambda 
 resource "aws_lambda_permission" "allow_bucket" {
   statement_id   = "AllowExecutionFromS3Bucket"
   action         = "lambda:InvokeFunction"
@@ -185,7 +187,7 @@ resource "aws_lambda_function" "lambda_dynamodb_function" {
     data.archive_file.lambdazip
   ]
 }
-
+#iam role
 resource "aws_iam_role" "lambda_role" {
   name = "${var.tag_name}-lambda-role"
 
@@ -254,7 +256,7 @@ resource "aws_iam_role" "lambda_role" {
     })
   }
 }
-
+#ec2 nat instance
 resource "aws_instance" "nat_instance" {
   ami               = data.aws_ami.nat_instance_ami.id
   instance_type     = var.nat_instance_type
@@ -268,7 +270,7 @@ resource "aws_instance" "nat_instance" {
   }
 
 }
-
+#app. load balance
 resource "aws_alb" "app_lb" {
   name               = "${var.tag_name}-lb-tf"
   ip_address_type    = "ipv4"
@@ -283,7 +285,7 @@ resource "aws_alb" "app_lb" {
     Owner = "${var.tag_owner}"
   }
 }
-
+#alb-target
 resource "aws_alb_target_group" "app_lb_tg" {
   name        = "${var.tag_name}-lb-tg"
   port        = 80
@@ -295,7 +297,7 @@ resource "aws_alb_target_group" "app_lb_tg" {
     Name = "${var.tag_name}-lb-tf"
   }
 }
-
+#alb-listeners
 resource "aws_alb_listener" "app_listener_http" {
   load_balancer_arn = aws_alb.app_lb.arn
   port              = 80
@@ -327,9 +329,10 @@ resource "aws_alb_listener" "app_listener_https" {
   }
 }
 
-# resource "aws_route53_zone" "r53_zone" {
-#   name = var.domain_name
-# }
+#route 53 
+#resource "aws_route53_zone" "r53_zone" {
+#  name = var.domain_name
+#}
 # If there isn't a hosted zone already to be selected, the resource block above can be used
 # Other resource blocks have to be adjusted accordingly
 
@@ -395,7 +398,7 @@ resource "aws_instance" "bastion_host" {
     Owner = "${var.tag_owner}"
   }
 }
-
+#template
 resource "aws_launch_template" "asg_lt" {
   name     = "${var.tag_name}-lt"
   image_id = data.aws_ami.ubuntu_ami.id
@@ -426,7 +429,7 @@ resource "aws_launch_template" "asg_lt" {
     }
   }
 }
-
+#asg
 resource "aws_autoscaling_group" "app_asg" {
   default_cooldown          = 200
   max_size                  = var.asg_max_instance_size
@@ -477,7 +480,7 @@ resource "aws_autoscaling_notification" "asg_notifications" {
 
   topic_arn = aws_sns_topic.sns_topic.arn
 }
-
+#sns 
 resource "aws_sns_topic" "sns_topic" {
   name = "server-status-change"
 }
@@ -487,7 +490,7 @@ resource "aws_sns_topic_subscription" "EmailSubscription" {
   protocol  = "email"
   endpoint  = var.operator_email
 }
-
+#cloudfront
 resource "aws_cloudfront_distribution" "alb_cf_distro" {
   origin {
     domain_name = aws_alb.app_lb.dns_name
@@ -542,7 +545,7 @@ resource "aws_cloudfront_distribution" "alb_cf_distro" {
     Name = "${var.tag_name}-cf-distro"
   }
 }
-
+#dynamodb
 resource "aws_dynamodb_table" "dynamodb_table" {
   name           = "${var.tag_name}-dynamodb-table"
   read_capacity  = 3
@@ -558,7 +561,7 @@ resource "aws_dynamodb_table" "dynamodb_table" {
     Name = "${var.tag_name}-dynamodb-table"
   }
 }
-
+#health check
 resource "aws_route53_health_check" "r53_health_check" {
   fqdn              = aws_cloudfront_distribution.alb_cf_distro.domain_name
   port              = 443
