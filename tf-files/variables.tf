@@ -11,7 +11,8 @@ variable "tag_name" {
 }
 
 variable "key_name" {
-  default = "project"
+  default = "mtkcloudevops"
+  #default = "project"
 }
 
 #vpc-subnet
