@@ -10,6 +10,7 @@ terraform {
 }
 
 provider "aws" {
+
   region = var.provider_region
 }
 #Vpc-subnet-group
