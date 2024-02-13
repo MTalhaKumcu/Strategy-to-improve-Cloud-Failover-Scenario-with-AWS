@@ -10,10 +10,7 @@ terraform {
 }
 
 provider "aws" {
-  region     = "us-east-1"
-  access_key = "AKIA4DWZQAMDVK33G2XT"
-  secret_key = "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"
-  # region = var.provider_region
+  region = var.provider_region
 }
 #Vpc-subnet-group
 resource "aws_db_subnet_group" "db_subnet_group" {
