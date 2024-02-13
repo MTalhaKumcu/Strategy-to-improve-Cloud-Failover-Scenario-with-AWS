@@ -281,8 +281,7 @@ resource "aws_alb" "app_lb" {
     aws_subnet.public_subnet[1].id,
   ]
   tags = {
-    Name  = "${var.tag_name}-lb-tf"
-    Owner = "${var.tag_owner}"
+    Name = "${var.tag_name}-lb-tf"
   }
 }
 #alb-target
