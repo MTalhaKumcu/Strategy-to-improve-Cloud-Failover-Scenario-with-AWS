@@ -109,7 +109,7 @@ variable "asg_min_instance_size" {
 }
 
 variable "asg_desired_capacity" {
-  default = "3"
+  default = "2"
 }
 
 variable "asg_policy_target_value" {
