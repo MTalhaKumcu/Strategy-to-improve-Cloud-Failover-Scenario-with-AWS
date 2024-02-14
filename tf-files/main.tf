@@ -9,8 +9,6 @@ terraform {
 }
 
 provider "aws" {
-
-
   region = var.provider_region
 }
 #Vpc-subnet-group
@@ -542,6 +540,7 @@ resource "aws_cloudfront_distribution" "alb_cf_distro" {
     Name = "${var.tag_name}-cf-distro"
   }
 }
+
 #dynamodb
 resource "aws_dynamodb_table" "dynamodb_table" {
   name           = "${var.tag_name}-dynamodb-table"

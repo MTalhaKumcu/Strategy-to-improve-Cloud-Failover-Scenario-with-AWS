@@ -105,7 +105,7 @@ variable "asg_max_instance_size" {
 }
 
 variable "asg_min_instance_size" {
-  default = "1"
+  default = "2"
 }
 
 variable "asg_desired_capacity" {
