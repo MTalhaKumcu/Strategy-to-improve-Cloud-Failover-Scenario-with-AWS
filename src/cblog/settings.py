@@ -87,7 +87,7 @@ DATABASES = {
         "NAME": "thesis",
         "USER": "admin",
         "PASSWORD": config("PASSWORD"),
-        "HOST": "com.amazonaws.us-east-1.s3",
+        "HOST": "thesisproject-db-instance.cpcgyiegef2x.us-east-1.rds.amazonaws.com",  # rds endpoint
         "PORT": "3306",
     }
 }

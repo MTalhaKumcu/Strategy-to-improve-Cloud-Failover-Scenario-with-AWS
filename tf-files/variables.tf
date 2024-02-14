@@ -12,7 +12,6 @@ variable "tag_name" {
 
 variable "key_name" {
   default = "mtkcloudevops"
-  #default = "project"
 }
 
 #vpc-subnet
@@ -110,11 +109,11 @@ variable "asg_min_instance_size" {
 }
 
 variable "asg_desired_capacity" {
-  default = "2"
+  default = "3"
 }
 
 variable "asg_policy_target_value" {
-  default = "70.0"
+  default = "80.0"
 }
 
 variable "bastion_host_instance_type" {
