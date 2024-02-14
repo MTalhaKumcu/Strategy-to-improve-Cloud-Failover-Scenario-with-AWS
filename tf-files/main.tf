@@ -4,12 +4,13 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.0"
-      #version = "5.14"
     }
   }
 }
 
 provider "aws" {
+
+
   region = var.provider_region
 }
 #Vpc-subnet-group
