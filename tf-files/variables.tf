@@ -77,7 +77,7 @@ variable "files_to_upload" {
 }
 
 variable "git-token" {
-  default = "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"
+  default = "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"
 }
 
 variable "s3_vpc_endpoint_service_name" {

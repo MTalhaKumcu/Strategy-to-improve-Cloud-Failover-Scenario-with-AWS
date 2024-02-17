@@ -8,11 +8,12 @@ resource "aws_security_group" "alb_sec_gr" {
   dynamic "ingress" {
     for_each = ["80", "443"]
     content {
-      description      = "HTTP/HTTPS inbound traffic"
-      from_port        = ingress.value
-      to_port          = ingress.value
-      protocol         = "tcp"
-      cidr_blocks      = ["0.0.0.0/0"]
+      description = "HTTP/HTTPS inbound traffic"
+      from_port   = ingress.value
+      to_port     = ingress.value
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+
       ipv6_cidr_blocks = ["::/0"]
     }
   }
@@ -143,6 +144,7 @@ resource "aws_security_group" "bastion_host_sec_gr" {
   name        = "${var.tag_name}-bastion-host-sec-gr"
   description = "Bastion Host Security Group allows SSH port from anywhere "
   vpc_id      = aws_vpc.main_vpc.id
+
 
   ingress {
     description      = "SSH inbound traffic"

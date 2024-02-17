@@ -1,4 +1,3 @@
-#Provider
 terraform {
   required_providers {
     aws = {
@@ -9,9 +8,10 @@ terraform {
 }
 
 provider "aws" {
-  region = var.provider_region
+  region  = var.provider_region
+  profile = "default"
 }
-#Vpc-subnet-group
+
 resource "aws_db_subnet_group" "db_subnet_group" {
   name        = "${var.tag_name}_db_subnet_group"
   description = "Subnets available for the RDS DB Instance"
@@ -23,7 +23,7 @@ resource "aws_db_subnet_group" "db_subnet_group" {
     Name = "${var.tag_name}_db_subnet_group"
   }
 }
-#Mysql DB
+
 resource "aws_db_instance" "db_instance" {
   allocated_storage           = 20
   allow_major_version_upgrade = false
@@ -46,11 +46,10 @@ resource "aws_db_instance" "db_instance" {
   # storage_encrypted      = true
   vpc_security_group_ids = [aws_security_group.rds_sec_gr.id]
   tags = {
-    Name  = "${var.tag_name}_db_instance"
-    Owner = "${var.tag_owner}"
+    Name = "${var.tag_name}_db_instance"
   }
 }
-#s3 bucket 
+
 resource "aws_s3_bucket" "s3_bucket_content" {
   bucket        = var.s3_bucket_content
   force_destroy = true
@@ -155,7 +154,6 @@ resource "aws_s3_bucket_website_configuration" "bucket_website_config" {
   }
 }
 
-#lambda 
 resource "aws_lambda_permission" "allow_bucket" {
   statement_id   = "AllowExecutionFromS3Bucket"
   action         = "lambda:InvokeFunction"
@@ -183,7 +181,7 @@ resource "aws_lambda_function" "lambda_dynamodb_function" {
     data.archive_file.lambdazip
   ]
 }
-#iam role
+
 resource "aws_iam_role" "lambda_role" {
   name = "${var.tag_name}-lambda-role"
 
@@ -252,21 +250,20 @@ resource "aws_iam_role" "lambda_role" {
     })
   }
 }
-#ec2 nat instance
+
 resource "aws_instance" "nat_instance" {
-  ami               = data.aws_ami.nat_instance_ami.id
+  ami               = data.aws_ami.al2023.id
   instance_type     = var.nat_instance_type
   source_dest_check = false
   security_groups   = [aws_security_group.nat_instance_sec_gr.id]
   key_name          = var.key_name
   subnet_id         = aws_subnet.public_subnet[0].id
   tags = {
-    Name  = "${var.tag_name}-NAT-instance"
-    Owner = "${var.tag_owner}"
+    Name = "${var.tag_name}-NAT-instance"
   }
 
 }
-#app. load balance
+
 resource "aws_alb" "app_lb" {
   name               = "${var.tag_name}-lb-tf"
   ip_address_type    = "ipv4"
@@ -280,7 +277,7 @@ resource "aws_alb" "app_lb" {
     Name = "${var.tag_name}-lb-tf"
   }
 }
-#alb-target
+
 resource "aws_alb_target_group" "app_lb_tg" {
   name        = "${var.tag_name}-lb-tg"
   port        = 80
@@ -292,7 +289,7 @@ resource "aws_alb_target_group" "app_lb_tg" {
     Name = "${var.tag_name}-lb-tf"
   }
 }
-#alb-listeners
+
 resource "aws_alb_listener" "app_listener_http" {
   load_balancer_arn = aws_alb.app_lb.arn
   port              = 80
@@ -324,10 +321,9 @@ resource "aws_alb_listener" "app_listener_https" {
   }
 }
 
-#route 53 
-#resource "aws_route53_zone" "r53_zone" {
-#  name = var.domain_name
-#}
+# resource "aws_route53_zone" "r53_zone" {
+#   name = var.domain_name
+# }
 # If there isn't a hosted zone already to be selected, the resource block above can be used
 # Other resource blocks have to be adjusted accordingly
 
@@ -345,7 +341,7 @@ resource "aws_route53_record" "cert_dns" {
   records         = [tolist(aws_acm_certificate.certificate.domain_validation_options)[0].resource_record_value]
   type            = tolist(aws_acm_certificate.certificate.domain_validation_options)[0].resource_record_type
   zone_id         = data.aws_route53_zone.selected.zone_id
-  ttl             = 300
+  ttl             = 60
 }
 
 resource "aws_acm_certificate_validation" "hello_cert_validate" {
@@ -389,11 +385,10 @@ resource "aws_instance" "bastion_host" {
   subnet_id              = aws_subnet.public_subnet[0].id
 
   tags = {
-    Name  = "${var.tag_name}-bastion-host"
-    Owner = "${var.tag_owner}"
+    Name = "${var.tag_name}-bastion-host"
   }
 }
-#template
+
 resource "aws_launch_template" "asg_lt" {
   name     = "${var.tag_name}-lt"
   image_id = data.aws_ami.ubuntu_ami.id
@@ -420,11 +415,10 @@ resource "aws_launch_template" "asg_lt" {
     resource_type = "instance"
     tags = {
       Name = "${var.tag_name}-lt"
-
     }
   }
 }
-#asg
+
 resource "aws_autoscaling_group" "app_asg" {
   default_cooldown          = 200
   max_size                  = var.asg_max_instance_size
@@ -475,7 +469,7 @@ resource "aws_autoscaling_notification" "asg_notifications" {
 
   topic_arn = aws_sns_topic.sns_topic.arn
 }
-#sns 
+
 resource "aws_sns_topic" "sns_topic" {
   name = "server-status-change"
 }
@@ -485,7 +479,7 @@ resource "aws_sns_topic_subscription" "EmailSubscription" {
   protocol  = "email"
   endpoint  = var.operator_email
 }
-#cloudfront
+
 resource "aws_cloudfront_distribution" "alb_cf_distro" {
   origin {
     domain_name = aws_alb.app_lb.dns_name
@@ -541,7 +535,6 @@ resource "aws_cloudfront_distribution" "alb_cf_distro" {
   }
 }
 
-#dynamodb
 resource "aws_dynamodb_table" "dynamodb_table" {
   name           = "${var.tag_name}-dynamodb-table"
   read_capacity  = 3
@@ -557,7 +550,7 @@ resource "aws_dynamodb_table" "dynamodb_table" {
     Name = "${var.tag_name}-dynamodb-table"
   }
 }
-#health check
+
 resource "aws_route53_health_check" "r53_health_check" {
   fqdn              = aws_cloudfront_distribution.alb_cf_distro.domain_name
   port              = 443

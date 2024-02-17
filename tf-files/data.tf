@@ -5,9 +5,7 @@ data "template_file" "s3_policy" {
   }
 }
 
-data "aws_caller_identity" "current" {
-
-}
+data "aws_caller_identity" "current" {}
 
 data "archive_file" "lambdazip" {
   type        = "zip"
@@ -21,7 +19,7 @@ data "archive_file" "lambdazip" {
 
 data "aws_ami" "nat_instance_ami" {
   most_recent = true
-  owners      = ["amazon"]
+  owners      = ["301380864081"]
 
   filter {
     name   = "virtualization-type"
@@ -33,10 +31,10 @@ data "aws_ami" "nat_instance_ami" {
     values = ["x86_64"]
   }
 
-  /*filter {
+  filter {
     name   = "name"
-    values = ["amzn-ami-vpc-nat-*"]
-  }*/
+    values = ["amzn-ami-vpc-nat-2018.03.0.20220503.0-x86_64-ebs"]
+  }
 }
 
 data "aws_ami" "al2023" {
@@ -77,12 +75,11 @@ data "aws_ami" "ubuntu_ami" {
   }
   filter {
     name   = "image-id"
-    values = ["ami-0c7217cdde317cfec"]
+    values = ["ami-0729e439b6769d6ab"]
   }
 }
 
-# Userdata will work with this ubuntu AMI.
-# In case of AMI change, the userdata has to be adjusted.
+# Userdata will work with this ubuntu AMI. In case of AMI change, the userdata has to be adjusted.
 
 data "aws_route53_zone" "selected" {
   name         = var.existing_hosted_zone
