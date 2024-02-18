@@ -398,7 +398,7 @@ resource "aws_launch_template" "asg_lt" {
   instance_type          = var.asg_lt_instance_type
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.ec2_sec_gr.id]
-  user_data = base64encode(templatefile("new-user-data.sh", {
+  user_data = base64encode(templatefile("user-data.sh", {
     user-data-git-token   = var.git-token,
     rds_db_name           = var.rds_db_name,
     db_username           = var.db_username,

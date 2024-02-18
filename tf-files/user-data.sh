@@ -9,7 +9,7 @@ git clone https://$TOKEN@github.com/MTalhaKumcu/Strategy-to-improve-Cloud-Failov
 cd /home/ubuntu/Strategy-to-improve-Cloud-Failover-Scenario-with-AWS
 sudo apt-get install python3.8-dev libmysqlclient-dev -y
 #fatih hoca
-sudo apt install python3.8-venv
+sudo apt install python3.8-venv -y
 python3 -m venv ~/.virtualenvs/djangodev
 source ~/.virtualenvs/djangodev/bin/activate
 #python -m pip install Django
