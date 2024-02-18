@@ -101,7 +101,7 @@ variable "nat_instance_type" {
 }
 
 variable "asg_max_instance_size" {
-  default = "4"
+  default = "2"
 }
 
 variable "asg_min_instance_size" {
