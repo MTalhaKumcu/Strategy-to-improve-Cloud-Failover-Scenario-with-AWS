@@ -252,7 +252,7 @@ resource "aws_iam_role" "lambda_role" {
 }
 
 resource "aws_instance" "nat_instance" {
-  ami               = data.aws_ami.al2023.id
+  ami               = data.aws_ami.nat_instance_ami.id
   instance_type     = var.nat_instance_type
   source_dest_check = false
   security_groups   = [aws_security_group.nat_instance_sec_gr.id]

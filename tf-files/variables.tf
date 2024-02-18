@@ -11,7 +11,7 @@ variable "tag_name" {
 }
 
 variable "key_name" {
-  default = "mtkcloudevops"
+  default = "newKeyPair"
 }
 
 #vpc-subnet

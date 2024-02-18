@@ -26,6 +26,7 @@ data "aws_ami" "nat_instance_ami" {
     values = ["hvm"]
   }
 
+
   filter {
     name   = "architecture"
     values = ["x86_64"]
@@ -33,7 +34,7 @@ data "aws_ami" "nat_instance_ami" {
 
   filter {
     name   = "name"
-    values = ["amzn-ami-vpc-nat-2018.03.0.20220503.0-x86_64-ebs"]
+    values = ["amzn-ami-vpc-nat-*"]
   }
 }
 
