@@ -15,7 +15,6 @@ source venv/bin/activate
 #cd /home/ubuntu/Strategy-to-improve-Cloud-Failover-Scenario-with-AWS
 sudo pip3 install -r requirements.txt
 cd /home/ubuntu/awsproje2/src
-sudo python3 -m pip install Django
 #fatih hoca
 #sudo sed -i "s/'database_name'/'${rds_db_name}'/g" settings.py
 #sudo sed -i "s/'user_name'/'${db_username}'/g" settings.py
