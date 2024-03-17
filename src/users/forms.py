@@ -13,11 +13,10 @@ class RegistrationForm(UserCreationForm):
         fields = ("username", "email")
 
     def clean_email(self):
-        email = self.cleaned_data["mtkcloudevops@gmail.com"]  # something@GMAİL.COM
+        email = self.cleaned_data['email']  # HENRY@GMAİL.COM
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError(
-                "Please use another Email, that one already taken"
-            )
+                "Please use another Email, that one already taken")
         return email
 
     # def clean_first_name(self):

@@ -10,7 +10,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: #444444;
+  color: #86cea9;
 }
 
 ul {
@@ -18,15 +18,15 @@ ul {
 }
 
 .bg-steel {
-  background-color: #5f788a;
+  background-color: #92b8d3;
 }
 
 .site-header .navbar-nav .nav-link {
-  color: #cbd5db;
+  color: #92cff2;
 }
 
 .site-header .navbar-nav .nav-link:hover {
-  color: #ffffff;
+  color: #6b6868;
 }
 
 .site-header .navbar-nav .nav-link.active {

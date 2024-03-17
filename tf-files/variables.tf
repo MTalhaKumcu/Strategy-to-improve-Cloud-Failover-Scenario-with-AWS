@@ -43,14 +43,14 @@ variable "s3_bucket_failover" {
 }
 
 variable "rds_db_name" {
-  default = "thesis"
+  default = "database1"
 }
 variable "db_username" {
   default = "admin"
 }
 
 variable "db_password" {
-  default = "admin1234"
+  default = "Admin1234"
 }
 
 variable "content_bucket_region" {
